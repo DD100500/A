@@ -1,0 +1,82 @@
+1. controllers/userController.js:
+```javascript
+// userController.js
+const User = require('../models/userModel');
+
+exports.getUserById = async (req, res) => {
+  // Logic to get a user by ID
+};
+
+exports.createUser = async (req, res) => {
+  // Logic to create a new user
+};
+
+exports.updateUser = async (req, res) => {
+  // Logic to update a user
+};
+
+exports.deleteUser = async (req, res) => {
+  // Logic to delete a user
+};
+```
+
+2. models/userModel.js:
+```javascript
+// userModel.js
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  // Add more fields as needed
+});
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
+```
+
+3. routes/userRoutes.js:
+```javascript
+// userRoutes.js
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
+
+router.get('/:id', userController.getUserById);
+router.post('/', userController.createUser);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
+
+module.exports = router;
+```
+
+4. app.js:
+```javascript
+// app.js
+const express = require('express');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
+
+const app = express();
+
+app.use(express.json());
+app.use('/users', userRoutes);
+
+mongoose.connect('mongodb://localhost:27017/userdb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+```
